@@ -6,9 +6,14 @@ RSpec.describe Cloned::Strategy do
     declare :department do
       association :account
       association :address
+      association :employees
 
       nullify :employees_count
       nullify :region
+
+      after do |copy, _target|
+        copy.copied_employees_count = copy.employees.size
+      end
     end
 
     declare :employee do
@@ -86,6 +91,7 @@ RSpec.describe Cloned::Strategy do
       it 'builds new record with expected associations' do
         expect(copy).to be_new_record
         expect(copy.employees_count).to be_nil
+        expect(copy.copied_employees_count).to be(1)
         expect(copy.region).to be_nil
         expect(copy.account).to be_new_record
         expect(copy.account.name).to eq(account1.name)

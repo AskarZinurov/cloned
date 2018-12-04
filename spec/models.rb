@@ -14,6 +14,8 @@ class Department < ActiveRecord::Base
   has_one :address, as: :addressable
 
   validates :name, :account, presence: true
+
+  attr_accessor :copied_employees_count
 end
 
 class Employee < ActiveRecord::Base

@@ -34,12 +34,12 @@ module Cloned
       options[:force].presence
     end
 
-    def optional_before(clon)
-      options[:before].call(clon) if options.key?(:before)
+    def optional_before(clon, target)
+      options[:before].call(clon, target) if options.key?(:before)
     end
 
-    def optional_after(clon)
-      options[:after].call(clon) if options.key?(:after)
+    def optional_after(clon, target)
+      options[:after].call(clon, target) if options.key?(:after)
     end
 
     class << self
@@ -69,18 +69,19 @@ module Cloned
         copy_association(
           target_association: target.public_send(association_id),
           destination: DestinationProxy.new(clon, association_id),
-          **options)
+          **options
+        )
       end
     end
 
-    def before(clon)
-      optional_before(clon)
-      declared_before(clon) if respond_to?(:declared_before)
+    def before(clon, target)
+      optional_before(clon, target)
+      declared_before(clon, target) if respond_to?(:declared_before)
     end
 
-    def after(clon)
-      optional_after(clon)
-      declared_after(clon) if respond_to?(:declared_after)
+    def after(clon, target)
+      optional_after(clon, target)
+      declared_after(clon, target) if respond_to?(:declared_after)
     end
 
     def prepare(clon)
@@ -101,10 +102,10 @@ module Cloned
 
     def make_copy(target:, destination:)
       clon = prepare(target.dup)
-      before(clon)
-      destination.concat(clon) unless destination.nil?
+      before(clon, target)
+      destination&.concat(clon)
       copy_associations(clon)
-      after(clon)
+      after(clon, target)
       clon
     end
   end

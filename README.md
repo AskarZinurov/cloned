@@ -25,11 +25,11 @@ First you need to define clonning stategy:
 ```ruby
 class CompanyCopyStrategy < Cloned::Strategy
   declare :company do
-    before do |copied_company|
+    before do |copied_company, _target_company|
       copied_company.copied_at = Time.zone.now
     end
 
-    after do |copied_company|
+    after do |copied_company, _target_company|
       copied_company.departments_count = copied_company.departments.size
     end
 
@@ -60,7 +60,7 @@ Cloning destination can be has_many association or nil.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/AskarZinurov/cloned.
+Bug reports and pull requests are welcome on GitHub at https://github.com/fs/cloned.
 
 ## License
 
