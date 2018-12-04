@@ -5,7 +5,7 @@ require 'sqlite3'
 require 'cloned'
 
 current_dir = File.dirname(__FILE__)
-config = YAML::load(IO.read(current_dir + '/database.yml'))
+config = YAML.safe_load(IO.read(current_dir + '/database.yml'))
 
 ActiveRecord::Base.logger = ActiveSupport::Logger.new(current_dir + '/debug.log')
 ActiveRecord::Base.establish_connection(config['sqlite3'])

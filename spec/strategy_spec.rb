@@ -39,8 +39,8 @@ RSpec.describe Cloned::Strategy do
     let(:employee_map) { EmployeeStrategy.cloners_map }
 
     it 'stores cloners for each model class' do
-      expect(department_map.keys).to match_array(%w(Department Employee))
-      expect(employee_map.keys).to match_array(%w(Employee))
+      expect(department_map.keys).to match_array(%w[Department Employee])
+      expect(employee_map.keys).to match_array(%w[Employee])
     end
 
     it 'defines map for each strategy' do
